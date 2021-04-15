@@ -1,5 +1,5 @@
 {
-  "name": "multi-contact-picker-plugin",
+  "name": "@adriaano/multi-contact-picker-plugin",
   "version": "0.0.1",
   "description": "Select Multiple Contacts",
   "main": "dist/plugin.js",
@@ -58,7 +58,5 @@
     "type": "git",
     "url": "resp"
   },
-  "bugs": {
-    "url": "resp/issues"
-  }
+  "dependencies": {}
 }
