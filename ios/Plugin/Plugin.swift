@@ -49,6 +49,53 @@ public class ContactPlugin: CAPPlugin, CNContactPickerDelegate {
                 }
             }
         }
+
+    @objc func search(_ call: CAPPluginCall) {
+        let value = call.getString("number") ?? "";
+        print("Value --> " + value);
+            
+            let contactStore = CNContactStore()
+            var contacts = [Any]()
+            let keys = [
+                    CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+                            CNContactPhoneNumbersKey,
+                            CNContactEmailAddressesKey,
+                            CNContactIdentifierKey
+                    ] as [Any]
+            let request = CNContactFetchRequest(keysToFetch: keys as! [CNKeyDescriptor])
+            
+            contactStore.requestAccess(for: .contacts) { (granted, error) in
+                if let error = error {
+                    print("failed to request access", error)
+                    call.reject("access denied")
+                    return
+                }
+                if granted {
+                   do {
+                       try contactStore.enumerateContacts(with: request){
+                               (contact, stop) in
+                        contacts.append([
+                            "id":contact.identifier,
+                            "firstName": contact.givenName,
+                            "lastName": contact.familyName,
+                            "telephone": contact.phoneNumbers.map { $0.value.stringValue }
+                        ]);
+                       }
+                       print(contacts)
+                       call.success([
+                           "results": contacts
+                       ])
+                   } catch {
+                       print("unable to fetch contacts")
+                       call.reject("Unable to fetch contacts")
+                   }
+                } else {
+                    print("access denied")
+                    call.reject("access denied")
+                }
+            }
+        }
+    
     
     func makeContact(_ contact: CNContact) -> JSObject {
             var res = JSObject()

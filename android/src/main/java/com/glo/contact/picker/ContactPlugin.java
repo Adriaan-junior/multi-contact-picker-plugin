@@ -64,11 +64,17 @@ public class ContactPlugin extends Plugin {
     }
 
     void pickMultipleContactAsync(PluginCall call) {
-        Intent phonebookIntent = new Intent("intent.action.INTERACTION_TOPMENU");
-        phonebookIntent.putExtra("additional", "phone-multi");
-        phonebookIntent.putExtra("FromMMS", true);
-        saveCall(call);
-        startActivityForResult(call, phonebookIntent, REQUEST_CONTACTS);
+        try {
+            Intent phonebookIntent = new Intent("intent.action.INTERACTION_TOPMENU");
+            phonebookIntent.putExtra("additional", "phone-multi");
+            phonebookIntent.putExtra("FromMMS", true);
+            saveCall(call);
+            startActivityForResult(call, phonebookIntent, REQUEST_CONTACTS);
+        }  catch (Exception e) {
+            Log.i("erorr  ==", "The erorr is "+ e);
+            call.reject(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     // in order to handle the intents result, you have to @Override handleOnActivityResult

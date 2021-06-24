@@ -6,4 +6,5 @@
 CAP_PLUGIN(ContactPlugin, "ContactPlugin",
            CAP_PLUGIN_METHOD(echo, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(getContacts, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(search, CAPPluginReturnPromise);
 )
